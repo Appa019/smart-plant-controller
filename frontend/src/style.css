@@ -2239,8 +2239,7 @@ body.is-landing::after { display: none; }
     gap: 1.75rem;
 }
 
-.lp-nav-links a,
-.lp-linkbtn {
+.lp-nav-links a {
     padding: 0.5rem 0;
     border: 0;
     background: none;
@@ -2251,8 +2250,7 @@ body.is-landing::after { display: none; }
     transition: color 0.15s;
 }
 
-.lp-nav-links a:hover,
-.lp-linkbtn:hover { color: var(--lp-accent); }
+.lp-nav-links a:hover { color: var(--lp-accent); }
 
 /* Hero: the pet, large */
 .lp-hero {
