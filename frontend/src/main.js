@@ -69,6 +69,8 @@ function showPage(name) {
     ['pageLanding', 'pageLogin', 'pageSignup', 'pageVerify', 'pageForgot', 'pageReset', 'pageSetup', 'pageDash'].forEach(id => {
         $(id).style.display = 'none';
     });
+    // The landing uses a plain white ground; the app pages keep the farm background
+    document.body.classList.toggle('is-landing', name === 'landing');
     if (name === 'landing') {
         $('pageLanding').style.display = 'block';
         initLandingObserver();
@@ -1348,15 +1350,6 @@ function checkWaterCooldown() {
 // ==================== LANDING PAGE ====================
 let landingObserverInit = false;
 
-function initNavScroll() {
-    const nav = document.getElementById('lpNav');
-    const landing = document.getElementById('pageLanding');
-    if (!nav || !landing) return;
-    landing.addEventListener('scroll', () => {
-        nav.classList.toggle('lp-nav--scrolled', landing.scrollTop > 40);
-    }, { passive: true });
-}
-
 function initPresentation() {
     const overlay = $('presOverlay');
     const track = $('presTrack');
@@ -1501,40 +1494,26 @@ function initLanding() {
     document.querySelectorAll('.back-to-landing').forEach(el =>
         el.addEventListener('click', e => { e.preventDefault(); showPage('landing'); })
     );
-    initCarousel();
     initPresentation();
-    initNavScroll();
 }
 
 function initLandingObserver() {
     if (landingObserverInit) return;
     landingObserverInit = true;
-    const root = $('pageLanding');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const items = document.querySelectorAll('.lp-reveal');
+    // Stagger siblings that enter together: 80ms per position in their parent
+    items.forEach(el => {
+        const i = [...el.parentElement.children].filter(c => c.classList.contains('lp-reveal')).indexOf(el);
+        el.style.transitionDelay = `${i * 80}ms`;
+    });
     const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
             if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); }
         });
-    }, { root, threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
-    document.querySelectorAll('.lp-reveal').forEach(el => obs.observe(el));
-}
-
-function initCarousel() {
-    const track = $('carouselTrack');
-    if (!track) return;
-    const slides = track.querySelectorAll('.lp-phone-slide');
-    const dots = $('carouselDots')?.querySelectorAll('.lp-dot') || [];
-    let cur = 0;
-    function go(i) {
-        if (i < 0) i = slides.length - 1;
-        if (i >= slides.length) i = 0;
-        slides.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
-        slides[i].classList.add('active');
-        dots[i]?.classList.add('active');
-        cur = i;
-    }
-    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
-    setInterval(() => { if ($('pageLanding').style.display !== 'none') go(cur + 1); }, 6000);
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    $('pageLanding').classList.add('lp-anim');
+    items.forEach(el => obs.observe(el));
 }
 
 // ==================== INIT ====================

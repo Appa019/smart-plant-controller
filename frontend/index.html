@@ -3,15 +3,15 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Hoya Pet</title>
-    <meta name="description" content="Pet virtual que cuida da sua planta com monitoramento IoT em tempo real" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hoya Pet: vaso com ESP32 e um pet em pixel art</title>
+    <meta name="description" content="Vaso com ESP32 que mede o solo, rega sozinho e mostra o estado da planta num pet em pixel art." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Nunito:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=Nunito:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/src/style.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js" defer></script>
-    <meta name="theme-color" content="#faf4e1" />
+    <meta name="theme-color" content="#ffffff" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 </head>
@@ -21,256 +21,139 @@
     <!-- LANDING PAGE -->
     <div id="pageLanding" class="page page-landing" style="display:none">
 
-        <!-- Nav -->
-        <nav class="lp-nav" id="lpNav">
-            <div class="lp-nav-inner">
-                <div class="lp-nav-logo">
-                    <picture>
-                        <source srcset="/pixel_hoya_logo.webp" type="image/webp">
-                        <img src="/pixel_hoya_logo.png" alt="Hoya Pet" width="28" height="28"
-                            style="image-rendering: pixelated;" />
-                    </picture>
-                    <span class="lp-nav-title">Hoya Pet</span>
-                </div>
-                <button class="lp-nav-link" id="openPresBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square">
-                        <rect x="2" y="3" width="20" height="14" rx="0"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                    </svg>
-                    Apresentação
-                </button>
-            </div>
-        </nav>
+        <header class="lp-nav">
+            <a class="lp-wordmark" href="#top">
+                <img src="/pixel_hoya_logo.webp" alt="" width="32" height="32" />
+                Hoya Pet
+            </a>
+            <nav class="lp-nav-links" aria-label="Seções">
+                <a href="#pet">O pet</a>
+                <a href="#vaso">O vaso</a>
+                <a href="#app">O app</a>
+            </nav>
+            <button type="button" class="lp-btn" id="landingLoginBtn">Entrar</button>
+        </header>
 
-        <!-- Hero -->
-        <section class="lp-hero">
-            <div class="lp-hero-text">
-                <span class="lp-label">Monitoramento IoT + Pixel Art Pet</span>
-                <h1 class="lp-hero-title">Seu pet virtual cuida da planta.</h1>
-                <p class="lp-hero-body">Um ESP32 no vaso, um servidor na nuvem e um bichinho pixel art que te avisa quando a planta precisa de agua.</p>
-                <div class="lp-hero-actions">
-                    <button class="lp-btn lp-btn--primary" id="landingCtaTop">Entrar no App</button>
-                    <a href="https://github.com/Appa019/Smart-AI-Plant-Controller" target="_blank" rel="noopener"
-                        class="lp-btn lp-btn--ghost">Ver no GitHub &rarr;</a>
-                </div>
-            </div>
-            <div class="lp-hero-visual">
-                <img src="/screenshots/hero_vase.png" alt="Smart Plant Pot" class="lp-hero-vase" />
-                <div class="lp-hero-badge">
-                    <picture>
-                        <source srcset="/pixel_cat.webp" type="image/webp">
-                        <img src="/pixel_cat.png" alt="" width="28" height="28" style="image-rendering:pixelated;" />
-                    </picture>
-                    <span>Seu pet ta de olho</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features -->
-        <section class="lp-features lp-reveal">
-            <div class="lp-section-header">
-                <span class="lp-label">Recursos</span>
-                <h2 class="lp-section-title">Monitoramento inteligente, com personalidade.</h2>
-            </div>
-            <div class="lp-features-grid">
-                <div class="lp-feat-card lp-reveal">
-                    <picture>
-                        <source srcset="/farm_temp_icon.webp" type="image/webp">
-                        <img src="/farm_temp_icon.png" alt="" class="lp-feat-icon" />
-                    </picture>
-                    <h3>Sensores no vaso</h3>
-                    <p>Temperatura, umidade do ar e do solo. Atualiza a cada 10 segundos direto do ESP32.</p>
-                    <span class="lp-feat-stat">3 sensores &middot; 10s refresh</span>
-                </div>
-                <div class="lp-feat-card lp-reveal">
-                    <picture>
-                        <source srcset="/farm_water_can_icon.webp" type="image/webp">
-                        <img src="/farm_water_can_icon.png" alt="" class="lp-feat-icon" />
-                    </picture>
-                    <h3>Rega pelo celular</h3>
-                    <p>Aperta o botao no app e a bomba liga. Ou deixa no automatico e ele rega sozinho.</p>
-                </div>
-                <div class="lp-feat-card lp-reveal">
-                    <picture>
-                        <source srcset="/pixel_cat.webp" type="image/webp">
-                        <img src="/pixel_cat.png" alt="" class="lp-feat-icon" style="image-rendering:pixelated;" />
-                    </picture>
-                    <h3>Pet que fala</h3>
-                    <p>Gato ou cachorro pixel art que reage ao estado da planta. Muda de humor e conversa com voce.</p>
-                    <span class="lp-feat-stat">2 updates/dia</span>
-                </div>
-                <div class="lp-feat-card lp-reveal">
-                    <picture>
-                        <source srcset="/cozy_plant_icon.webp" type="image/webp">
-                        <img src="/cozy_plant_icon.png" alt="" class="lp-feat-icon" style="image-rendering:pixelated;" />
-                    </picture>
-                    <h3>Ate 5 plantas</h3>
-                    <p>Cada planta tem seu perfil (identificado por foto com IA) e seu proprio pet cuidando dela.</p>
-                    <span class="lp-feat-stat">5 perfis simultaneos</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Hardware / Prototype -->
-        <section class="lp-proto lp-reveal">
-            <div class="lp-proto-image">
-                <img src="/screenshots/prototype_real.png" alt="Prototipo real montado a mao" class="lp-proto-img" />
-            </div>
-            <div class="lp-proto-text">
-                <span class="lp-label">O Hardware</span>
-                <h2 class="lp-section-title">Montado na mao.</h2>
-                <p>ESP32-C3, sensor capacitivo no solo, bomba de agua 5V e modulo AHT10 pra temperatura e umidade. Firmware em C++ puro com calibracao automatica.</p>
-            </div>
-        </section>
-
-        <!-- App Screenshots -->
-        <section class="lp-app lp-reveal">
-            <div class="lp-app-text">
-                <span class="lp-label">O App</span>
-                <h2 class="lp-section-title">Tudo no navegador.</h2>
-                <p>Dashboard com dados em tempo real, historico, controle de irrigacao e o pet que reage a tudo. Funciona de qualquer lugar.</p>
-            </div>
-            <div class="lp-app-phone">
-                <div class="lp-phone-frame">
-                    <div class="lp-phone-screen" id="carouselTrack">
-                        <div class="lp-phone-slide active">
-                            <img src="/screenshots/screen_dash.webp" alt="Dashboard"
-                                onerror="this.parentElement.innerHTML='<div class=\'lp-slide-placeholder\'>Dashboard</div>'" />
-                        </div>
-                        <div class="lp-phone-slide">
-                            <img src="/screenshots/screen_pet.webp" alt="Pet Virtual"
-                                onerror="this.parentElement.innerHTML='<div class=\'lp-slide-placeholder\'>Pet Virtual</div>'" />
-                        </div>
-                        <div class="lp-phone-slide">
-                            <img src="/screenshots/screen_metrics.webp" alt="Metricas"
-                                onerror="this.parentElement.innerHTML='<div class=\'lp-slide-placeholder\'>Metricas</div>'" />
-                        </div>
-                        <div class="lp-phone-slide">
-                            <img src="/screenshots/screen_setup.webp" alt="Setup"
-                                onerror="this.parentElement.innerHTML='<div class=\'lp-slide-placeholder\'>Setup</div>'" />
-                        </div>
+        <main id="top">
+            <section class="lp-hero" aria-labelledby="lpTitle">
+                <div class="lp-hero-text lp-reveal">
+                    <h1 class="lp-display" id="lpTitle">Hoya Pet</h1>
+                    <p class="lp-lead">Um vaso com ESP32 que mede o solo, rega a planta sozinho e passa a leitura para um pet em pixel art. Quando o solo muda, o desenho do pet muda junto.</p>
+                    <div class="lp-actions">
+                        <button type="button" class="lp-btn" id="landingCtaTop">Entrar no app</button>
+                        <a class="lp-link" href="https://github.com/Appa019/smart-plant-controller" target="_blank" rel="noopener">Ver o código no GitHub</a>
                     </div>
                 </div>
-                <div class="lp-phone-dots" id="carouselDots">
-                    <span class="lp-dot active"></span>
-                    <span class="lp-dot"></span>
-                    <span class="lp-dot"></span>
-                    <span class="lp-dot"></span>
-                </div>
-            </div>
-        </section>
 
-        <!-- How it works -->
-        <section class="lp-howto lp-reveal">
-            <div class="lp-section-header lp-section-header--center">
-                <span class="lp-label">Passo a passo</span>
-                <h2 class="lp-section-title">Como funciona</h2>
-            </div>
-            <div class="lp-howto-grid">
-                <div class="lp-howto-step lp-reveal">
-                    <span class="lp-howto-num">01</span>
-                    <h3>Espeta o sensor</h3>
-                    <p>Coloca o sensor capacitivo no solo, liga o ESP32 no Wi-Fi e ele ja comeca a mandar dados.</p>
-                </div>
-                <div class="lp-howto-step lp-reveal">
-                    <span class="lp-howto-num">02</span>
-                    <h3>Abre o app</h3>
-                    <p>Dashboard mostra tudo: temperatura, umidade, grafico historico. Funciona de qualquer lugar.</p>
-                </div>
-                <div class="lp-howto-step lp-reveal">
-                    <span class="lp-howto-num">03</span>
-                    <h3>Tira foto da planta</h3>
-                    <p>A OpenAI Vision identifica a especie e monta o perfil com cuidados especificos.</p>
-                </div>
-                <div class="lp-howto-step lp-reveal">
-                    <span class="lp-howto-num">04</span>
-                    <h3>Ganha um pet</h3>
-                    <p>Pixel art gerado por IA que muda 2x por dia. Ele cuida da planta e conversa com voce.</p>
-                </div>
-            </div>
-        </section>
+                <figure class="lp-pet lp-reveal">
+                    <div class="lp-pet-stage">
+                        <img class="lp-pet-img lp-pet-img--dry" src="/landing/pet-cat-watering.webp" width="305" height="296"
+                            alt="Gato em pixel art regando um jasmim-estrela com um regador pequeno" />
+                        <img class="lp-pet-img lp-pet-img--wet" src="/landing/pet-dog-umbrella.webp" width="288" height="280"
+                            alt="Cachorro em pixel art segurando um guarda-chuva sobre um filodendro-coração" />
+                    </div>
+                    <figcaption class="lp-pet-caption">
+                        <fieldset class="lp-soil-switch">
+                            <legend class="lp-sr">Estado do solo</legend>
+                            <label><input class="lp-sr" type="radio" name="lpSoil" value="dry" /> Solo secando</label>
+                            <label><input class="lp-sr" type="radio" name="lpSoil" value="wet" checked /> Solo encharcado</label>
+                        </fieldset>
+                        <span class="lp-pet-state lp-pet-state--dry">Luna cuida de um jasmim-estrela. Com o solo abaixo da faixa ideal da espécie, o servidor pede um desenho do pet regando a planta.</span>
+                        <span class="lp-pet-state lp-pet-state--wet">Butterball cuida de um filodendro-coração. Com o solo acima de 60%, o app avisa <q>solo encharcado, verificar drenagem</q> e o pet aparece de guarda-chuva.</span>
+                    </figcaption>
+                </figure>
+            </section>
 
-        <!-- Tech + About (unified) -->
-        <section class="lp-tech lp-reveal">
-            <div class="lp-tech-text">
-                <span class="lp-label">Por baixo do capo</span>
-                <h2 class="lp-section-title">Stack completa, do firmware ao browser.</h2>
-                <p>O ESP32-C3 le o sensor capacitivo (ADC 12-bit) e o AHT10 via I2C, e envia tudo por HTTP POST pro servidor a cada 10 segundos. O firmware e C++ puro, com calibracao automatica.</p>
-                <p>O backend e um unico server.py em FastAPI (~1800 linhas) que faz tudo: auth com JWT, ingestao dos dados do ESP32, historico em SQLite, irrigacao remota, e 3 chamadas diferentes pra OpenAI - Vision pra identificar planta, Responses API pra gerar o pixel art, e Web Search pras frases do dia.</p>
-                <p>Frontend e JS vanilla com Vite, sem framework. Roda na Vercel com Supabase.</p>
-                <a href="https://github.com/Appa019/Smart-AI-Plant-Controller" target="_blank" rel="noopener"
-                    class="lp-tech-link">Ver codigo no GitHub &rarr;</a>
-            </div>
-            <div class="lp-tech-pills">
-                <div class="lp-pill-group">
-                    <span class="lp-pill-label">Hardware</span>
-                    <div class="lp-pill-row">
-                        <span class="lp-pill lp-reveal">ESP32-C3</span>
-                        <span class="lp-pill lp-reveal">C++ / Arduino</span>
-                        <span class="lp-pill lp-reveal">AHT10</span>
+            <section class="lp-section lp-react" id="pet" aria-labelledby="lpPetTitle">
+                <div class="lp-react-head lp-reveal">
+                    <h2 class="lp-title" id="lpPetTitle">Um desenho por estado</h2>
+                    <p>No cadastro você escolhe gato ou cachorro. Depois, o servidor junta a leitura do vaso, a hora do dia e a faixa ideal da espécie e pede um novo desenho. A regra está no código:</p>
+                    <div class="lp-sprites">
+                        <img src="/pixel_cat.webp" alt="Rosto do gato em pixel art" width="512" height="487" loading="lazy" />
+                        <img src="/pixel_dog.webp" alt="Rosto do cachorro em pixel art" width="512" height="487" loading="lazy" />
                     </div>
                 </div>
-                <div class="lp-pill-group">
-                    <span class="lp-pill-label">Backend</span>
-                    <div class="lp-pill-row">
-                        <span class="lp-pill lp-reveal">Python</span>
-                        <span class="lp-pill lp-reveal">FastAPI</span>
-                        <span class="lp-pill lp-reveal">SQLite</span>
-                    </div>
-                </div>
-                <div class="lp-pill-group">
-                    <span class="lp-pill-label">AI</span>
-                    <div class="lp-pill-row">
-                        <span class="lp-pill lp-reveal">OpenAI Vision</span>
-                        <span class="lp-pill lp-reveal">DALL-E</span>
-                    </div>
-                </div>
-                <div class="lp-pill-group">
-                    <span class="lp-pill-label">Frontend</span>
-                    <div class="lp-pill-row">
-                        <span class="lp-pill lp-reveal">Vite</span>
-                        <span class="lp-pill lp-reveal">JS Vanilla</span>
-                    </div>
-                </div>
-                <div class="lp-pill-group">
-                    <span class="lp-pill-label">Infra</span>
-                    <div class="lp-pill-row">
-                        <span class="lp-pill lp-reveal">Vercel</span>
-                        <span class="lp-pill lp-reveal">Supabase</span>
-                        <span class="lp-pill lp-reveal">Nginx</span>
-                        <span class="lp-pill lp-reveal">Systemd</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <dl class="lp-rules lp-reveal">
+                    <div><dt>Solo abaixo de 15%</dt><dd>corre com um regador gigante, em pânico</dd></div>
+                    <div><dt>Solo abaixo do ideal</dt><dd>rega com um regador pequeno, com cuidado</dd></div>
+                    <div><dt>Solo acima de 60%</dt><dd>segura um guarda-chuva sobre a planta</dd></div>
+                    <div><dt>Frio</dt><dd>enrola o vaso num cachecol</dd></div>
+                    <div><dt>Calor</dt><dd>abana a planta com uma folha</dd></div>
+                    <div><dt>Ar seco</dt><dd>borrifa água em volta</dd></div>
+                    <div><dt>Tudo no ponto</dt><dd>toca ukulele, dança ou mede a planta com uma régua</dd></div>
+                </dl>
+            </section>
 
-        <!-- CTA Final -->
-        <section class="lp-cta-final lp-reveal">
-            <div class="lp-cta-final-inner">
-                <div class="lp-cta-final-text">
-                    <h2 class="lp-section-title">Quer testar?</h2>
-                    <p>Cria uma conta e ve o sistema rodando com dados reais do sensor.</p>
+            <section class="lp-section lp-vaso" id="vaso" aria-labelledby="lpVasoTitle">
+                <img class="lp-vaso-photo lp-reveal" src="/landing/prototype.webp" width="900" height="1600" loading="lazy"
+                    alt="Protótipo montado à mão: vaso preto com a planta, mangueira da bomba, copo de reservatório e fios do ESP32 presos ao suporte" />
+                <div class="lp-vaso-text lp-reveal">
+                    <h2 class="lp-title" id="lpVasoTitle">Montado à mão</h2>
+                    <ul class="lp-parts">
+                        <li>ESP32-C3 SuperMini</li>
+                        <li>Sensor capacitivo de umidade do solo v1.2</li>
+                        <li>AHT10 para temperatura e umidade do ar</li>
+                        <li>Mini bomba submersa de 80 a 120 L/h</li>
+                    </ul>
+                    <p>O firmware é C++ no Arduino IDE. Cada conta calibra o próprio sensor pelo app: a leitura do solo encharcado vira o 100%.</p>
                 </div>
-                <button class="lp-btn lp-btn--primary" id="landingCtaBottom">Criar Conta</button>
-            </div>
-        </section>
+            </section>
 
-        <!-- Footer -->
+            <section class="lp-section lp-steps" aria-labelledby="lpStepsTitle">
+                <h2 class="lp-title lp-reveal" id="lpStepsTitle">Como ele decide regar</h2>
+                <ol class="lp-verbs">
+                    <li class="lp-reveal"><strong>Mede</strong><p>Lê o solo e o ar e manda para a nuvem a cada 3 segundos. Uma média das últimas 30 leituras corta os picos do sensor.</p></li>
+                    <li class="lp-reveal"><strong>Rega</strong><p>A cada minuto confere o solo. Se está seco, liga a bomba por 2 segundos, uns 44 a 66 ml de água.</p></li>
+                    <li class="lp-reveal"><strong>Espera</strong><p>Depois de regar, espera 1 hora para a água descer antes de tentar de novo.</p></li>
+                    <li class="lp-reveal"><strong>Avisa</strong><p>Se três pulsos seguidos não mudam a leitura, para de regar e avisa que o reservatório pode estar vazio.</p></li>
+                </ol>
+            </section>
+
+            <section class="lp-section lp-app" id="app" aria-labelledby="lpAppTitle">
+                <div class="lp-app-text lp-reveal">
+                    <h2 class="lp-title" id="lpAppTitle">O app, no navegador</h2>
+                    <ul class="lp-feats">
+                        <li>Até 5 plantas por conta, cada uma com o seu pet.</li>
+                        <li>Uma foto da planta basta: a OpenAI identifica a espécie e devolve as faixas ideais de temperatura, ar e solo.</li>
+                        <li>Gráficos de temperatura, ar e solo de 1 hora a 3 dias.</li>
+                        <li>Botão para regar na hora, com pausa de 5 minutos entre uma rega e outra.</li>
+                        <li>Conta com e-mail e senha, confirmada por código.</li>
+                    </ul>
+                </div>
+                <div class="lp-shots" role="region" tabindex="0" aria-label="Telas do app, role para o lado">
+                    <img class="lp-reveal" src="/screenshots/pres_dashboard_mobile.webp" width="375" height="812" loading="lazy"
+                        alt="Tela do app no celular com a gata Luna regando o jasmim-estrela e a frase do dia" />
+                    <img class="lp-reveal" src="/screenshots/screen_metrics.webp" width="375" height="812" loading="lazy"
+                        alt="Tela de métricas: temperatura 20,3 °C, ar 58,9%, solo 100% e saúde da planta 70" />
+                    <img class="lp-reveal" src="/screenshots/screen_dash.webp" width="375" height="812" loading="lazy"
+                        alt="Tela do app com o cachorro Butterball e o aviso de solo encharcado" />
+                </div>
+            </section>
+
+            <section class="lp-section lp-stack" aria-labelledby="lpStackTitle">
+                <div class="lp-stack-head lp-reveal">
+                    <h2 class="lp-title" id="lpStackTitle">Do sensor ao navegador</h2>
+                    <p>O ESP32 manda cada leitura para uma API FastAPI na Vercel, que grava no Supabase. O navegador busca os dados com um token JWT e mostra o pet.</p>
+                    <a class="lp-link" href="https://github.com/Appa019/smart-plant-controller" target="_blank" rel="noopener">Ver o código no GitHub</a>
+                </div>
+                <dl class="lp-stack-list lp-reveal">
+                    <div><dt>Firmware</dt><dd>C++ no ESP32-C3, Wi-Fi e HTTP</dd></div>
+                    <div><dt>API</dt><dd>Python 3.12 e FastAPI, serverless na Vercel</dd></div>
+                    <div><dt>Dados</dt><dd>Supabase: Postgres para leituras e contas, Storage para fotos e desenhos</dd></div>
+                    <div><dt>IA</dt><dd>OpenAI: gpt-5.2 identifica a planta e desenha o pet; gpt-4.1-mini com busca na web escreve as frases</dd></div>
+                    <div><dt>Front</dt><dd>Vite e JavaScript puro, sem framework</dd></div>
+                    <div><dt>Rotina</dt><dd>um cron diário na Vercel redesenha o pet</dd></div>
+                </dl>
+            </section>
+        </main>
+
         <footer class="lp-footer">
-            <div class="lp-footer-inner">
-                <div class="lp-footer-left">
-                    <picture>
-                        <source srcset="/pixel_hoya_logo.webp" type="image/webp">
-                        <img src="/pixel_hoya_logo.png" alt="" width="20" height="20"
-                            style="image-rendering:pixelated;" />
-                    </picture>
-                    <span>Hoya Pet &copy; 2026</span>
-                </div>
-                <div class="lp-footer-links">
-                    <a href="https://github.com/Appa019/Smart-AI-Plant-Controller" target="_blank"
-                        rel="noopener">GitHub</a>
-                    <a href="https://github.com/Appa019" target="_blank" rel="noopener">@Appa019</a>
-                </div>
+            <div class="lp-footer-row">
+                <button type="button" class="lp-btn" id="landingCtaBottom">Criar conta</button>
+                <a class="lp-link" href="https://github.com/Appa019/smart-plant-controller" target="_blank" rel="noopener">Código no GitHub</a>
+                <a class="lp-link" href="https://pedropestana.dev" target="_blank" rel="noopener">Feito por Pedro Pestana</a>
             </div>
+            <p class="lp-footer-name" aria-hidden="true"><img src="/pixel_hoya_logo.webp" alt="" width="640" height="640" loading="lazy" />Hoya Pet</p>
         </footer>
 
         <!-- PRESENTATION OVERLAY -->
